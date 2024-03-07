@@ -1,0 +1,15 @@
+// Hare & Tortoise [x,2x]
+ class Solution {
+ public:
+    ListNode* middleNode(ListNode* head) {
+        ListNode* fast_head = head;
+        ListNode* slow_head = head;
+
+        while(fast_head != NULL && fast_head->next != NULL){
+            fast_head = fast_head->next->next;
+            slow_head = slow_head->next;
+        }
+
+        return slow_head;
+    }
+};
