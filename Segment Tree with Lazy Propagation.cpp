@@ -20,49 +20,51 @@ void build(ll ind, ll low, ll high) {
 
 void propagate(ll ind, ll low, ll high) {
     if (lazy[ind] != 0) {
-        seg[ind] += (high - low + 1) * lazy[ind];  // Apply the pending updates to the node
+        seg[ind] += (high - low + 1) * lazy[ind];  // Apply the pending update to the segment
         
         if (low != high) {  // If not a leaf node, propagate the laziness to children
             lazy[2 * ind + 1] += lazy[ind];
             lazy[2 * ind + 2] += lazy[ind];
         }
-        lazy[ind] = 0;  // Clear the lazy value for the current node
+        lazy[ind] = 0;  // Clear the lazy value for this node
     }
 }
 
 void update(ll ind, ll low, ll high, ll l, ll r, ll u) {
-    propagate(ind, low, high);  // Ensure all previous updates are applied
+    propagate(ind, low, high);  // Apply any pending updates
     
     if (low > r || high < l) {
         return;  // Out of range
     }
-
+    
     if (low >= l && high <= r) {
         // Completely within range
         lazy[ind] += u;  // Mark this node as needing an update
         propagate(ind, low, high);  // Apply the lazy update
         return;
     }
-
+    
     ll mid = (low + high) / 2;
     update(2 * ind + 1, low, mid, l, r, u);  // Update the left child
     update(2 * ind + 2, mid + 1, high, l, r, u);  // Update the right child
     seg[ind] = seg[2 * ind + 1] + seg[2 * ind + 2];  // Recalculate the sum for the current node
 }
 
-ll query(ll ind, ll low, ll high, ll idx) {
-    propagate(ind, low, high);  // Ensure all previous updates are applied
+ll query(ll ind, ll low, ll high, ll l, ll r) {
+    propagate(ind, low, high);  // Apply any pending updates
     
-    if (low == high) {
-        return seg[ind];  // Return the value at the leaf node
+    if (low > r || high < l) {
+        return 0;  // Out of range
     }
-
+    
+    if (low >= l && high <= r) {
+        return seg[ind];  // Completely within range
+    }
+    
     ll mid = (low + high) / 2;
-    if (idx <= mid) {
-        return query(2 * ind + 1, low, mid, idx);
-    } else {
-        return query(2 * ind + 2, mid + 1, high, idx);
-    }
+    ll leftSum = query(2 * ind + 1, low, mid, l, r);
+    ll rightSum = query(2 * ind + 2, mid + 1, high, l, r);
+    return leftSum + rightSum;
 }
 
 int main() {
@@ -71,11 +73,11 @@ int main() {
     ll n, q;
     cin >> n >> q;
     
-    // Read initial values
+    // Read the initial array
     for (ll i = 0; i < n; i++) {
         cin >> arr[i];
     }
-
+    
     // Build the segment tree
     build(0, 0, n - 1);
     
@@ -84,19 +86,19 @@ int main() {
         cin >> type;
         
         if (type == 1) {
-            // Update query: increase range [a, b] by u
-            ll a, b, u;
-            cin >> a >> b >> u;
-            a--; b--;  // Convert to 0-indexed
-            update(0, 0, n - 1, a, b, u);
-        } else {
-            // Point query: get the value at position k
-            ll k;
-            cin >> k;
-            k--;  // Convert to 0-indexed
-            cout << query(0, 0, n - 1, k) << endl;
+            // Update query: add `u` to all elements in range [l, r]
+            ll l, r, u;
+            cin >> l >> r >> u;
+            l--; r--;  // Convert to 0-indexed
+            update(0, 0, n - 1, l, r, u);
+        } else if (type == 2) {
+            // Range sum query: get the sum of elements in range [l, r]
+            ll l, r;
+            cin >> l >> r;
+            l--; r--;  // Convert to 0-indexed
+            cout << query(0, 0, n - 1, l, r) << endl;
         }
     }
-
+    
     return 0;
 }
