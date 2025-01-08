@@ -20,7 +20,7 @@ void solve(){
    ll arr[n+5];
    arr[0]=0; 
    // hash values of s string
-   ll prime=7;
+   ll prime=31; // use large prime value to avoid collisions;
    for(ll i=0; i<n; i++){
     arr[i+1]=(((arr[i]*prime)%mod)+s[i])%mod;
    }
@@ -58,3 +58,18 @@ int main()
         solve();
     }
 }
+
+               Explaination
+***************************************************
+s="abcde";  a[i+1]=(a[i]*p+s[i])%mod;
+a[0]=0;
+a[1]=0*p^0 + 'a';
+a[2] = 'a'*p^1 + 'b';
+a[3] = 'a'*p^2 + 'b'*p^1 + 'c';
+a[4] = 'a'*p^3 + 'b'*p^2 + 'c'*p^1 + 'd';
+a[5] = 'a'*p^4 + 'b'*p^3 + 'c'*p^2 + 'd'*p^1 + 'e';
+
+hash(cd) = a[4]-(a[2]*p^ln); 
+//ln(cd)=2
+hash(cde) = a[e]-(a[2]*p^ln); 
+//ln(cde)=3
