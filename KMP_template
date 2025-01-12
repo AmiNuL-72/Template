@@ -1,0 +1,54 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long int ll;
+
+// Function to compute the LPS array
+vector<ll> calcLPS(string s) {
+    ll n = s.length();
+    vector<ll> lpsArray(n);
+    for (ll i = 1, j = 0; i < n; i++) {
+        while (j > 0 && s[j] != s[i]) 
+            j = lpsArray[j - 1];
+        if (s[j] == s[i]) 
+            j++;
+        lpsArray[i] = j;
+    }
+    return lpsArray;
+}
+
+//...KMP function to find all occurrences of the pattern in the text...
+vector<ll> kmp(string text, string pattern) {
+    vector<ll> lpsArray = calcLPS(pattern);
+    vector<ll> occurrences; // To store starting indices of matches
+
+    ll n = text.length(), m = pattern.length();
+    for (ll i = 0, j = 0; i < n; i++) {
+        while (j > 0 && pattern[j] != text[i]) 
+            j = lpsArray[j - 1];
+        if (pattern[j] == text[i]) 
+            j++;
+        if (j == m) {
+            occurrences.push_back(i - m + 1); // Match found at index i - m + 1
+            j = lpsArray[j - 1]; // Continue searching
+        }
+    }
+    return occurrences;
+}
+
+int main() {
+    string text, pattern;
+    getline(cin, text);
+    getline(cin, pattern);
+
+    vector<ll> occurrences = kmp(text, pattern);
+
+    if (occurrences.empty()) {
+        cout << "Pattern not found in text." << endl;
+    } else {
+        cout << "Pattern found at indices: ";
+        for (ll idx : occurrences) {
+            cout << idx << " ";
+        }
+        cout << endl;
+    }
+}
