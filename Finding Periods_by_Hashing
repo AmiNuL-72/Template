@@ -1,0 +1,54 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll   long long
+#define pb   push_back
+#define yes   cout<<"YES"<<endl
+#define no   cout<<"NO"<<endl
+#define all(x) (x).begin(), (x).end()
+#define gcd(a,b) __gcd(a,b)
+#define lcm(a,b) (a*b)/__gcd(a,b)
+#define optimize() ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+
+ll get_hash(ll l, ll r, const vector<ll>& hash, const vector<ll>& power, ll M) {
+    ll h = hash[r+1] - (power[r-l+1] * hash[l] % M) % M;
+    return h < 0 ? h + M : h;
+}
+
+void solve() {
+    string s;
+    cin >> s;
+    ll n = s.length();
+
+    ll P = 31;
+    ll M = 1000000007;
+
+    vector<ll> power(n+5, 1);
+    for (ll i = 1; i < n; i++) {
+        power[i] = (power[i-1] * P) % M;
+    }
+
+    vector<ll> hash(n+10, 0);
+    for (ll i = 1; i <= n; i++) {
+        hash[i] = (hash[i-1] * P + s[i-1]) % M;
+    }
+
+    for (ll i = 0; i < n; i++) {
+        ll runIdx = 0;
+        bool ok = true;
+        while (runIdx < n) {
+            ll len = min(i + 1, n - runIdx);
+            ok &= (get_hash(0, len - 1, hash, power, M) == get_hash(runIdx, runIdx + len - 1, hash, power, M));
+            runIdx += len;
+        }
+        if (ok) {
+            cout << i + 1 << " ";
+        }
+    }
+}
+
+int main() {
+    optimize();
+    ll t = 1;
+    //cin >> t;  
+    while (t--) solve();
+}
