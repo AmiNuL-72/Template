@@ -1,0 +1,70 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long int ll;
+
+#define all(x) (x).begin(), (x).end()
+#define Pair pair<ll, ll>
+
+const ll N = 1e5+7;
+vector<Pair> adjList[N];
+ll prevNode[N];
+ll cost[N];
+
+void dijkstra(ll n) {
+    for (ll i = 0; i <= n; i++) {
+        cost[i] = 1e18;  
+        prevNode[i] = -1;
+    }
+    cost[1] = 0;
+
+    priority_queue<Pair, vector<Pair>, greater<Pair>> pq;
+    pq.push({0, 1});  // (cost, vertex)
+
+    while (!pq.empty()) {
+        ll currNode = pq.top().second;
+        ll currNodeCost = pq.top().first;
+        pq.pop();
+
+        if (currNodeCost > cost[currNode]) continue;
+
+        for (auto &u : adjList[currNode]) {
+            // Relaxation
+            if (cost[u.first] > cost[currNode] + u.second) {
+                cost[u.first] = cost[currNode] + u.second;
+                prevNode[u.first] = currNode;  // Track the path
+                pq.push({cost[u.first], u.first});
+            }
+        }
+    }
+}
+
+void printPath(ll node) {
+    if (node == -1) return; 
+    printPath(prevNode[node]);
+    cout << node << " ";
+}
+
+int main() {
+    ll n, m;
+    cin >> n >> m;
+    for (ll i = 0; i <= n; i++) adjList[i].clear();
+    while (m--) {
+        ll u, v, w;
+        cin >> u >> v >> w;
+        adjList[u].push_back({v, w});
+        adjList[v].push_back({u, w});
+    }
+
+    dijkstra(n);
+
+    if (cost[n] == 1e18) {
+        cout << -1 << endl;
+    } 
+    else {
+        //cout << cost[n] << endl; 
+        printPath(n);
+        cout << endl;
+    }
+
+    return 0;
+}
