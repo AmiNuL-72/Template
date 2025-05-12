@@ -1,0 +1,72 @@
+/*
+    // Initialize [L, R] as all prime
+    vector<bool> is_prime(R - L + 1, true);
+
+    // Mark non-primes in [L, R] using small primes
+    for (long long p : primes) {
+        long long start = max(p * p, ((L + p - 1) / p) * p);
+        for (long long j = start; j <= R; j += p)
+            is_prime[j - L] = false;
+    }
+*/
+
+#include <bits/stdc++.h>
+using namespace std;
+
+// Function to compute all primes in range [L, R] using segmented sieve
+vector<long long> segmented_sieve(long long L, long long R) {
+    long long limit = sqrt(R) + 1;
+    //cout<<limit<<endl;
+    vector<bool> is_prime_small(limit + 1, true);
+    is_prime_small[0] = is_prime_small[1] = false;
+
+    // Regular sieve up to sqrt(R)
+    for (long long i = 2; i * i <= limit; ++i) {
+        if (is_prime_small[i]) {
+            for (long long j = i * i; j <= limit; j += i)
+                is_prime_small[j] = false;
+        }
+    }
+
+    // Store small primes
+    vector<long long> primes;
+    for (long long i = 2; i <= limit; ++i)
+        if (is_prime_small[i])
+            primes.push_back(i);
+
+    // Initialize [L, R] as all prime
+    vector<bool> is_prime(R - L + 1, true);
+
+    // Mark non-primes in [L, R] using small primes
+    for (long long p : primes) {
+        long long start = max(p * p, ((L + p - 1) / p) * p);
+        for (long long j = start; j <= R; j += p)
+            is_prime[j - L] = false;
+    }
+
+    // Special case: if L == 1
+    if (L == 1)
+        is_prime[0] = false;
+
+    // Collect primes in the range
+    vector<long long> result;
+    for (long long i = 0; i <= R - L; ++i) {
+        if (is_prime[i])
+            result.push_back(L + i);
+    }
+
+    return result;
+}
+
+// Example usage
+int main() {
+    long long L,R;
+    cin>>L>>R;
+    vector<long long> primes = segmented_sieve(L, R);
+    
+    for (long long p : primes)
+        cout << p << " ";
+    cout << "\n";
+
+    return 0;
+}
