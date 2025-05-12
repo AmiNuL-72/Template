@@ -1,4 +1,5 @@
 /*
+----------------------------------------------------------------
     // Initialize [L, R] as all prime
     vector<bool> is_prime(R - L + 1, true);
 
@@ -8,6 +9,7 @@
         for (long long j = start; j <= R; j += p)
             is_prime[j - L] = false;
     }
+----------------------------------------------------------------
 */
 
 #include <bits/stdc++.h>
