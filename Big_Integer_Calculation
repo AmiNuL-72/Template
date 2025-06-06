@@ -1,0 +1,49 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll  long long
+#define pb  push_back
+#define all(x) (x).begin(), (x).end()
+#define  gcd(a,b)  __gcd(a,b)
+#define    lcm(a,b)  (a*b)/__gcd(a,b)
+#define optimize() ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+
+string Big_Integer(const string &num){
+    string res="";
+    ll carry=0, base=2;
+    for(ll i=num.size()-1; i>=0; i--){
+        ll val=(num[i]-'0')*base + carry;
+        carry=val/10;
+        val%=10;
+        res+=(val+'0');
+    }
+    if(carry>0) res+=(carry+'0');
+    reverse(all(res));
+    return res;
+}
+
+void solve(){
+    ll k; cin>>k;
+    ll l,r; cin>>l>>r;
+    //.....calculate: base^k 
+    string ans="1";
+    for(ll i=0; i<k; i++){
+        ans=Big_Integer(ans);
+    }
+    cout<<ans<<endl; //( base^k )
+    //----------------------------------------------
+    // :to print [l,r] substring without leading 0; 
+    // string result=ans.substr(l-1,r-l+1);
+    // ll pos=0;
+    // while(pos<result.size()&&result[pos]=='0') pos++;
+    // result=result.substr(pos);
+    // cout<<result<<endl;
+}
+
+signed main()
+{
+    optimize();
+    ll t=1;
+    //cin>>t;
+    while(t--) solve();
+    return 0;
+}
