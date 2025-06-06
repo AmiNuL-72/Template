@@ -1,0 +1,8 @@
+**Count the number of lattice points on a segment (including endpoints).
+count = gcd(abs(x2 - x1), abs(y2 - y1)) + 1;
+---------------------------------------------------
+**Count the number of lattice points inside or on the rectangle
+                            with bottom-left (a, b) and top-right (c, d).
+count = (c - a + 1) * (d - b + 1)
+->Each integer value from a to c on x-axis, and from b to d on y-axis.
+---------------------------------------------------
