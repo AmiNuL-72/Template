@@ -1,0 +1,2 @@
+// min priority queue using greater<int>
+    priority_queue<int, vector<int>, greater<int>> pq;
