@@ -37,6 +37,9 @@ int main()
 
 
 **********************************************
--->> os.find_by_order(index);
+⚡ order_of_key(x)
+Returns the count of elements strictly smaller than x
+⚡ find_by_order(k)
+Returns an iterator to the k-th smallest element (0-based index).
 -->> less_equal == multiset
 -->> less == set
