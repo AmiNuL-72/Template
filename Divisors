@@ -5,6 +5,21 @@ using namespace std;
 #define all(x) (x).begin(), (x).end()
 #define optimize() ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
 
+const ll MX=1000005;
+ll KhaEbarTLE[MX];   // Calculate how many divisors has each number;
+ll SumOfDivisors[MX];   // Calculate Sum of all divisors for each number;
+
+// O(n*log(n)) -------------------------------------
+void PreCom(){
+    for(ll i=1; i<MX; i++){
+        for(ll j=i; j<MX; j+=i){
+            KhaEbarTLE[j]++;
+            SumOfDivisors[j]+=i;
+        }
+    }
+    //for(auto u:KhaEbarTLE) cout<<u<<' ';
+}
+//---------------------------------------------------
 void solve(){
     ll n; cin>>n;
     vector<ll>div;
@@ -23,6 +38,7 @@ signed main()
     optimize();
     ll t=1;
    // cin>>t;
+   // PreCom();
     while(t--) solve();
     return 0;
 }
