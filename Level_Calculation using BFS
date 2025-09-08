@@ -1,0 +1,55 @@
+/*
+-> Can calculate shortest path(min edges) from source for each node [unweighted graph]
+-> shortest path==level
+*/
+#include<bits/stdc++.h>
+using namespace std;
+#define ll  long long
+#define pb  push_back
+#define all(x) (x).begin(), (x).end()
+#define  gcd(a,b)  __gcd(a,b)
+#define    lcm(a,b)  (a*b)/__gcd(a,b)
+#define optimize() ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+
+const ll N=1e5+5;
+vector<ll> adj[N];
+vector<ll>level(N,-1);
+queue<ll>q;
+
+void bfs(ll u){
+    level[u]=0;
+    q.push(u);
+    while(!q.empty()){
+        ll x=q.front();
+        q.pop();
+        for(auto v:adj[x]){
+            if(level[v]==-1){
+                q.push(v);
+                level[v]=level[x]+1;
+            }
+        }
+    }
+}
+void solve(){
+    for(ll i=0; i<=N; i++){
+        adj[i].clear();
+        level[i]=-1;
+    }
+    ll n,m; cin>>n>>m;
+    while(m--){
+        ll x,y; cin>>x>>y;
+        adj[x].pb(y);
+        adj[y].pb(x);
+    }
+    bfs(1);
+    cout<<level[n]<<endl;
+}
+
+signed main()
+{
+    optimize();
+    ll t=1;
+    cin>>t;
+    while(t--) solve();
+    return 0;
+}
