@@ -1,0 +1,56 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll  long long
+#define pb  push_back
+#define all(x) (x).begin(), (x).end()
+#define  gcd(a,b)  __gcd(a,b)
+#define    lcm(a,b)  (a*b)/__gcd(a,b)
+#define optimize() ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+
+const ll MX=1e5+5;
+vector<ll> adj[MX];
+vector<bool>vis(MX,0);
+ll black=0,white=0;
+
+void dfs(ll u, ll color){
+    vis[u]=1;
+    if(color==1) white++;
+    else black++;
+    for(auto x:adj[u]){
+        if(!vis[x]) dfs(x,1-color);
+    }
+}
+void solve(){
+    for(ll i=0; i<MX; i++){
+        adj[i].clear();
+        vis[i]=0;
+    }
+    ll n=0,m; cin>>m;
+    while(m--){
+        ll u,v; cin>>u>>v;
+        adj[u].pb(v);
+        adj[v].pb(u);
+        n=max(n,max(u,v));
+    }
+    ll ans=0;
+    for(ll i=1; i<=n; i++){
+        black=0,white=0;
+        if(!vis[i]&&!adj[i].empty()){
+            dfs(i,1);
+        }
+        ans+=max(black,white);
+    }
+    cout<<ans<<endl;
+}
+
+signed main()
+{
+    optimize();
+    ll t=1;
+    cin>>t;
+    for(ll i=1; i<=t; i++){
+        cout<<"Case "<<i<<": ";
+        solve();
+    }
+    return 0;
+}
