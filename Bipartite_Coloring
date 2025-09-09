@@ -1,3 +1,6 @@
+//------------------------------------------------------------------------------
+-> collect possible maximum bi-coloring from full graph
+
 #include<bits/stdc++.h>
 using namespace std;
 #define ll  long long
@@ -51,6 +54,67 @@ signed main()
     for(ll i=1; i<=t; i++){
         cout<<"Case "<<i<<": ";
         solve();
+    }
+    return 0;
+}
+
+
+//--------------------------------------------------------------
+
+-> Given connected component is Bipartite or not?
+
+#include<bits/stdc++.h>
+using namespace std;
+#define ll  long long
+#define pb  push_back
+#define all(x) (x).begin(), (x).end()
+#define  gcd(a,b)  __gcd(a,b)
+#define    lcm(a,b)  (a*b)/__gcd(a,b)
+#define optimize() ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+
+const ll mx=205;
+vector<ll> adj[mx];
+ll color[mx];
+ll n,l;
+
+bool bfs(ll s){
+    queue<ll>q;
+    q.push(s);
+    color[s]=1;
+    while(!q.empty()){
+        ll x=q.front();
+        q.pop();
+        for(auto u:adj[x]){
+            if(color[u]==-1){
+                if(color[x]==1) color[u]=2;
+                else color[u]=1;
+                q.push(u);
+            }
+            else if(color[u]==color[x]){
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+int main()
+{
+    optimize();
+    while(cin>>n){
+        if(n==0) break;
+        for(ll i=0; i<n; i++){
+            adj[i].clear();
+            color[i]=-1;
+        }
+        cin>>l;
+        for(ll i=0; i<l; i++){
+            ll u,v; cin>>u>>v;
+            adj[u].pb(v);
+            adj[v].pb(u);
+        }
+        if(bfs(0)) cout<<"BICOLORABLE.\n";
+        else cout<<"NOT BICOLORABLE.\n";
     }
     return 0;
 }
