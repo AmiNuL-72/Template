@@ -1,0 +1,46 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll  long long
+#define pb  push_back
+#define all(x) (x).begin(), (x).end()
+#define  gcd(a,b)  __gcd(a,b)
+#define    lcm(a,b)  (a*b)/__gcd(a,b)
+#define optimize() ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+
+const ll mx=1e5+5;
+ll weight[mx];
+ll value[mx],n,w;
+ll dp[105][mx];
+
+ll messiuuuuuuuu(ll i, ll currW){
+    if(i>n) return 0;
+    if(dp[i][currW]!=-1) return dp[i][currW];
+    ll cal0=0,cal1=0;
+    // niye jabo na; 0
+    if(currW<=w){
+        cal0=max(cal0,0+messiuuuuuuuu(i+1,currW));
+    }
+    // niye jabo; 1
+    if(currW+weight[i]<=w){
+        cal1=max(cal1,value[i]+messiuuuuuuuu(i+1,currW+weight[i]));
+    }
+    return dp[i][currW]=max(cal0,cal1);
+}
+
+signed main()
+{
+    optimize();
+    ll t=1; //cin>>t;
+    for(ll tc=1; tc<=t; tc++){
+        //cout<<"Case "<<tc<<": ";
+        cin>>n>>w; 
+        for(ll i=1; i<=n; i++){
+            cin>>weight[i];
+            cin>>value[i];
+        }
+        memset(dp,-1,sizeof(dp));
+        ll ans=messiuuuuuuuu(1,0);
+        cout<<ans<<endl;
+    }
+    return 0;
+}
