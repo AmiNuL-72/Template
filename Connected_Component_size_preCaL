@@ -1,0 +1,63 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll  long long
+#define pb  push_back
+#define all(x) (x).begin(), (x).end()
+#define  gcd(a,b)  __gcd(a,b)
+#define    lcm(a,b)  (a*b)/__gcd(a,b)
+#define optimize() ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+
+const ll mx=5e5+5;
+vector<ll> adj[mx];
+vector<bool>vis(mx,false);
+vector<ll>compSize(mx,0);
+vector<ll>component;
+ll n,m,cnt=0;
+
+void dfs(ll u){
+    vis[u]=true;
+    component.pb(u);
+    for(auto v:adj[u]){
+        if(!vis[v]){
+            dfs(v);
+        }
+    }
+}
+//
+void solve(){
+    cin>>n>>m;
+    while(m--){
+        ll k; cin>>k;
+        vector<ll>v(k);
+        for(ll i=0; i<k; i++){
+            cin>>v[i];
+        }
+        for(ll i=0; i<k-1; i++){
+            adj[v[i]].pb(v[i+1]);
+            adj[v[i+1]].pb(v[i]);
+        }
+    }
+
+    for(ll i=1; i<=n; i++){
+        if(!vis[i]){
+            component.clear();
+            dfs(i);
+            ll sz=component.size();
+            for(auto x:component){
+                compSize[x]=sz;
+            }
+        }
+    }
+    for(ll i=1; i<=n; i++){
+        cout<<compSize[i]<<' ';
+    }
+}
+
+signed main()
+{
+    optimize();
+    ll t=1;
+    //cin>>t;
+    while(t--) solve();
+    return 0;
+}
