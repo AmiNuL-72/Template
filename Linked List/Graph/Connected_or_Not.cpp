@@ -10,16 +10,14 @@ int main(){
     for(int i=0; i<N; i++){
         for(int j=0; j<N; j++){
             adj[i][j]=0;
-            adj[i][i]=0;
-            adj[j][j]=0;
         }
     }
     for(int i=0; i<E; i++){
         int u,v;
         cin>>u>>v;
         adj[u][v]=1;   
-        adj[u][u]=1;   
-        adj[v][v]=1;   
+        //adj[u][u]=1;   
+        //adj[v][v]=1;   
     }
 
     int Q; cin>>Q;
@@ -27,7 +25,7 @@ int main(){
     while(Q--){
         int A,B;
         cin>>A>>B;
-        if(adj[A][B]==1) cout<<"YES"<<endl;
+        if((A==B) || adj[A][B]==1) cout<<"YES"<<endl;
         else cout<<"NO"<<endl;
     }
 
