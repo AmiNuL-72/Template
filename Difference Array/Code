@@ -1,0 +1,29 @@
+#include <bits/stdc++.h>
+using namespace std;
+ 
+int main()
+{
+  int n;
+  cin >> n;
+ 
+  vector<int> dif(n + 2);
+ 
+  int q;
+  cin >> q;
+  while (q--)
+  {
+    int l, r;
+    cin >> l >> r;
+    dif[l]++;
+    dif[r + 1]--;
+  }
+  int ans  = 0;
+  for (int i = 1; i <= n; i++)
+  {
+    dif[i] += dif[i - 1];
+    cout<<dif[i]<<' ';
+    //ans = max(ans,dif[i]);
+  }
+  //cout<<ans<<endl;
+  return 0;
+}
