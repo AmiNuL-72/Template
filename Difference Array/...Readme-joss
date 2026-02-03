@@ -1,0 +1,18 @@
+#Technique: Difference Array
+------------------------------------------------------------------------------
+problem: N size er array te sob 0 value thkbe, Q ta querry thakbe. 
+        Prottek querry te [L,R] dibe, L theke R porjonto sob value +1 korte
+        hobe; sob querry sese last e array ta print korte hobe.
+------------------------------------------------------------------------------
+Solution: (L,R) -> dif[L]++ && dif[R+1]--
+           then -> Prefix Sum the dif[] array
+                -> Prefix Array tai==> Answer;
+
+          N=5,Q=3-> (1,2),(1,4),(2,3)
+                  dif[0,+2,+1,-1,-1,-1,0]
+                  pre[0,2,3,2,1,0,0] ->(ans): 2,3,2,1,0
+        ----------------------------------------
+kno hocce? -> karon prefix sum e L er por sob value tei man ta add hote thake, 
+kintu amr toh arrayr last porjonto add howya dorkar nai; 
+tai R+1]-- korbo: jeno L thke R porjonto count hoy& R+1 thke array last pojonto
+impact vanis kore dei.
